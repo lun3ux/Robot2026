@@ -1,26 +1,52 @@
 package frc.robot.subsystems;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Commands.CommandUtils;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
-public class Intake {
+public class Intake extends SubsystemBase {
 
-    double speed = 0.5;
-    // 1. Declare the motor
-    private final TalonFX motor = new TalonFX(10); // Replace 10 with your CAN ID
-    private final DutyCycleOut request = new DutyCycleOut(0);
-        // 2. Configure motor
-    private final TalonFXConfiguration configs = new TalonFXConfiguration();
-        // Optional: Set current limits to prevent burning out motors (e.g., 40A)
-    // 3. Set speed (percentage -1.0 to 1.0)
+    private final TalonFX motor = new TalonFX(18);
+    private final DutyCycleOut request = new DutyCycleOut(0.1);
 
-    public void IntakeEnable(double speed) {
-        motor.setControl(request.withOutput(-speed));
+    public Intake() {
+        TalonFXConfiguration configs = new TalonFXConfiguration();
+        motor.getConfigurator().apply(configs);
     }
 
-    public void Score(double speed) {
-        motor.setControl(request.withOutput(speed));
+    public void intake(double speed) {
+        motor.set(-speed);
     }
 
+    public void score(double speed) {
+        motor.set(speed);
+    }
+
+    public void stop() {
+        motor.set(0);
+    }
+
+
+    public Command IntakeCommand() { return CommandUtils.withName(("Intake"),intakeCommand(0.5));
+ }
+
+
+    public Command intakeCommand(double speed) {
+        return new RunCommand(
+            () -> intake(speed),
+            this
+        ).finallyDo(this::stop);
+    }
+
+    public Command scoreCommand(double speed) {
+        return new RunCommand(
+            () -> score(speed),
+            this
+        ).finallyDo(this::stop);
+    }
 }

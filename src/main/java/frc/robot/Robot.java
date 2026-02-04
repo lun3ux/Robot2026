@@ -6,22 +6,36 @@ package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.Commands.CommandUtils;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import frc.robot.Limelight.Limelight;
+import frc.robot.Limelight.LimelightHelpers;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private final RobotContainer m_robotContainer;
 	private final XboxController controller;
-    private final Intake intake;
     /* log and replay timestamp and joystick data */
+	private SendableChooser<Command> autoChooser;
+    private Command semiAutomatedCommand = null;
+    private StructPublisher<Pose2d> autoTargetPosePublisher = NetworkTableInstance.getDefault().getStructTopic("targetPose", Pose2d.struct).publish();
+    public Intake intake = new Intake();
+    public Limelight Limelight;
 
-
-
+    //#region Pathplanner
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
         .withTimestampReplay()
         .withJoystickReplay();
@@ -29,7 +43,6 @@ public class Robot extends TimedRobot {
     public Robot() {
         m_robotContainer = new RobotContainer();
         controller = new XboxController(0);
-        intake = new Intake();
     }
 
     @Override
@@ -63,24 +76,30 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousExit() {}
 
+
     @Override
     public void teleopInit() {
-		if (controller.getYButton()) {
-		} else if (controller.getAButton()) {
-            intake.IntakeEnable(0.5);
-		} else if (controller.getXButton()) {
-            intake.IntakeEnable(-0.5);
-		} else if (controller.getBButton()) {
-		} else {
-		}
+
     }
 
     @Override
     public void teleopPeriodic() {
 
+    }
 
 
-}
+    @Override
+	public void robotInit() {
+		System.out.println("Waiting for connection to Driver Station...");		
+		while (!DriverStation.waitForDsConnection(2))
+		{
+			System.out.println("Retrying connection to Driver Station...");
+		}
+		System.out.println("Connected to Driver Station!");
+
+		frc.robot.Limelight.Limelight.registerDevice("limelight");
+    }
+
 
     @Override
     public void teleopExit() {}
