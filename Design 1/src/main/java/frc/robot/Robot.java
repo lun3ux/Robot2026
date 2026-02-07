@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Commands.CommandUtils;
 import frc.robot.Limelight.Limelight;
 import frc.robot.Limelight.LimelightHelpers;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -25,11 +27,12 @@ public class Robot extends TimedRobot {
     private final RobotContainer m_robotContainer;
 	private final XboxController controller;
     /* log and replay timestamp and joystick data */
-	private SendableChooser<Command> autoChooser;
+	// private SendableChooser<Command> autoChooser;
     private Command semiAutomatedCommand = null;
     private StructPublisher<Pose2d> autoTargetPosePublisher = NetworkTableInstance.getDefault().getStructTopic("targetPose", Pose2d.struct).publish();
     public Intake intake = new Intake();
     public Limelight Limelight;
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     //#region Pathplanner
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
@@ -77,6 +80,8 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
 
     }
+
+
 
     @Override
     public void teleopPeriodic() {

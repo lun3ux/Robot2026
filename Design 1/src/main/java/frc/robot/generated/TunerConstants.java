@@ -21,10 +21,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class TunerConstants {
     // Both sets of gains need to be tuned to your individual robot.
 
-
-    
-
-
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()
@@ -78,13 +74,13 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
-    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(4.7244);
+    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(3.79);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
     private static final double kCoupleRatio = 3.5714285714285716;
 
-    private static final double kDriveGearRatio = 6.122448979591837;
+    private static final double kDriveGearRatio = 8.142857142857142;
     private static final double kSteerGearRatio = 21.428571428571427;
     private static final Distance kWheelRadius = Inches.of(2);
 
@@ -133,7 +129,7 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 10;
     private static final int kFrontLeftSteerMotorId = 11;
     private static final int kFrontLeftEncoderId = 21;
-    private static final Angle kFrontLeftEncoderOffset = Rotations.of(0.4541015625);
+    private static final Angle kFrontLeftEncoderOffset = Rotations.of(0.3076171875);
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -144,7 +140,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 16;
     private static final int kFrontRightSteerMotorId = 17;
     private static final int kFrontRightEncoderId = 24;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.4541015625);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.466796875);
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
@@ -155,7 +151,7 @@ public class TunerConstants {
     private static final int kBackLeftDriveMotorId = 12;
     private static final int kBackLeftSteerMotorId = 13;
     private static final int kBackLeftEncoderId = 22;
-    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.4345703125);
+    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.445556640625);
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
@@ -166,7 +162,7 @@ public class TunerConstants {
     private static final int kBackRightDriveMotorId = 14;
     private static final int kBackRightSteerMotorId = 15;
     private static final int kBackRightEncoderId = 23;
-    private static final Angle kBackRightEncoderOffset = Rotations.of(0.158203125);
+    private static final Angle kBackRightEncoderOffset = Rotations.of(0.283447265625);
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 
@@ -266,10 +262,10 @@ public class TunerConstants {
          *                                  unspecified or set to 0 Hz, this is 250 Hz on
          *                                  CAN FD, and 100 Hz on CAN 2.0.
          * @param odometryStandardDeviation The standard deviation for odometry calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param visionStandardDeviation   The standard deviation for vision calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param modules                   Constants for each specific module
          */

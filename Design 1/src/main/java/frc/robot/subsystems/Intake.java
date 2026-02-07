@@ -31,10 +31,7 @@ public class Intake extends SubsystemBase {
         motor.set(0);
     }
 
-
-    public Command IntakeCommand() { return CommandUtils.withName(("Intake"),intakeCommand(0.5));
- }
-
+ 
 
     public Command intakeCommand(double speed) {
         return new RunCommand(

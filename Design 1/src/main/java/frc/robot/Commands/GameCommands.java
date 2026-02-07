@@ -8,10 +8,7 @@ import frc.robot.Robot;
 
 public class GameCommands 
 {
-    public final Command Intake() 
-    { 
-        return CommandUtils.withName("Intake", r.intake.IntakeCommand());
-    }
+
 
     private final Robot r;
 

@@ -11,30 +11,25 @@ import java.util.Optional;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.Intake;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Intake;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 public class RobotContainer {
     // private final SendableChooser<Command> autoChooser;
     
-    
+    //#region Initialization
     private double MaxSpeed = 1 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(1.5).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     Optional<Alliance> ally = DriverStation.getAlliance();
@@ -42,29 +37,33 @@ public class RobotContainer {
     public double y; 
     public double z;
     private final Intake intake = new Intake();
+    private final Climber climber = new Climber();
 
     /* Setting up bindings for neces]\[
      sary control of the swerve drive platform */
+
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-
     private final Telemetry logger = new Telemetry(MaxSpeed);
     private final CommandXboxController joystick = new CommandXboxController(0);
-
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+
+    //#endregion
+    //#region Commands
+
+
+
 
     public RobotContainer() {
         // autoChooser = AutoBuilder.buildAutoChooser();
         // SmartDashboard.putData("Auto Selection", autoChooser);
         
         configureBindings();
-
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
     }
-
 
 
     private void configureBindings() {
@@ -96,6 +95,12 @@ public class RobotContainer {
 
         joystick.leftBumper()
         .whileTrue(intake.intakeCommand(-0.3));
+
+        joystick.pov(180)
+        .whileTrue(climber.downCommand(1));
+        joystick.pov(0)
+        .whileTrue(climber.upCommand(1));
+
 
         // // Run SysId routines when holding back/start and X/Y.
         // // Note that each routine should be run exactly once in a single log.
@@ -130,5 +135,18 @@ public class RobotContainer {
 
         // return autoChooser.getSelected();
     // }
+
+    // public Command getAutonomousCommand() {
+    //     // This method loads the auto when it is called, however, it is recommended
+    //     // to first load your paths/autos when code starts, then return the
+    //     // pre-loaded auto/path
+    //     // return autoChooser.getSelected();
+    //       }
+    // TODO: FIX AUTO
+          
+
+
+
+
 
 }
